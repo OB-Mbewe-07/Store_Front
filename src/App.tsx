@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import GetProducts from './API/data'
+import GetProducts from './Componets/Products'
+import { Provider } from './components/ui/provider'
 
 function App() {
   return(
     <div>
-      <GetProducts />
+      <Provider>
+        <GetProducts />
+      </Provider> 
     </div>
   )
 }
