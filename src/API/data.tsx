@@ -1,26 +1,28 @@
-//https://medium.com/@wolfflucas/the-definitive-guide-to-make-api-calls-in-react-4c4da98f4d1c
-import { useEffect, useState } from "react";
+import { use, Suspense } from "react";
+
+interface Props{
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+    category: string;
+    description: string;
+}
+
+const allProducts = fetch('https://fakestoreapi.com/products')
+    .then(response => response.json()) as Promise<Props[]>;
 
 function GetProducts(){
-    const [product, setProduct] = useState([]);
-
-    useEffect(()=>{
-        fetch('https://fakestoreapi.com/products')
-        .then(res=>res.json())            
-        .then(json=>setProduct(json))
-        .then(json=> console.log(json));
-    },[]);
-    
+    const products = use(allProducts);
     return(
-        <div>
+        <Suspense fallback={<p>Products are loading</p>}>
             <ul>
-                {product.map(item => (
-                    <li key={item.id}>{item.title}</li>
-                ))}
-            </ul>
-        </div>
-       
-    )
+                {products.map((product)=>(
+                <li>{product.title}</li>
+                ))};
+            </ul>   
+        </Suspense>
+    )  
 }
 
 export default GetProducts;
