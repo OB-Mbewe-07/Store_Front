@@ -4,7 +4,7 @@ export const initialState: stateOfCartItems ={
     products:[]
 }
 
-function cartReducer(state: stateOfCartItems, action:reducerActions): stateOfCartItems{
+export default function cartReducer(state: stateOfCartItems, action:reducerActions): stateOfCartItems{
     switch(action.type){
         case "add":{
             const containsValue = state.products.find(prod => prod.product.id === action.payload.id)
@@ -16,6 +16,7 @@ function cartReducer(state: stateOfCartItems, action:reducerActions): stateOfCar
                     )
                 }
             };
+            /*Im thinking this bottom part must be a button  that adds a new product, its not being implemented yet though*/
             return {
                 ...state,
                 products: [...state.products, {product: action.payload, quantity: 1}]
