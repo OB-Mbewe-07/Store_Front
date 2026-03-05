@@ -30,7 +30,7 @@ export default function cartReducer(state: stateOfCartItems, action:reducerActio
                 ...state,
                 products: state.products.map( prod =>
                     prod.product.id === action.payload ? {...prod, quantity: prod.quantity - 1} : prod
-                )
+                ).filter(prod => prod.quantity > 0)
             }
         }
         case "increaseQuantity":{

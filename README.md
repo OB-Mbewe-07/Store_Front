@@ -1,73 +1,195 @@
-# React + TypeScript + Vite
+# Store Front 🛒
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A shopping cart application built with React, TypeScript, and the FakeStore API. Built using the Reducer + Context pattern with no prop drilling.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Overview
 
-## React Compiler
+Store Front is a fully functional e-commerce shopping cart that fetches real product data from [fakestoreapi.com](https://fakestoreapi.com). Users can browse products, add them to a cart, adjust quantities, and view a live cart summary — all powered by a central reducer and React Context.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Technology | Purpose |
+|---|---|
+| React 18 | UI framework |
+| TypeScript | Type safety, no `any` |
+| Vite | Build tool |
+| Chakra UI | Component styling |
+| HeroUI | Navbar component |
+| Tailwind CSS | Utility styling |
+| vite-plugin-pwa | Service worker + PWA manifest |
+| FakeStore API | Product data source |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+
+# Navigate into the project
+cd Store_Front
+
+# Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running the app
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Development mode
+npm run dev
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Production build
+npm run build
+
+# Preview production build (required for Lighthouse testing)
+npm run preview
 ```
+
+---
+
+## Component Structure
+
+```
+src/
+├── store/
+│   ├── types.ts              # All TypeScript interfaces and types
+│   ├── cartReducer.ts        # Reducer function + initial state
+│   └── CartContext.tsx       # CartProvider, useCart, useCartDispatch
+├── components/
+│   ├── Nav.tsx               # Navbar component
+│   ├── Products.tsx          # ProductList + ProductGrid with Suspense
+│   └── Summary.tsx           # CartSummary with totals
+├── API/
+│   └── data.ts               # getAllProducts fetch function
+└── App.tsx                   # Layout only — wraps everything in CartProvider
+```
+
+---
+
+## How the Reducer Works
+
+All cart state lives in a single reducer — no standalone `useState` for cart data.
+
+### State Shape
+
+```ts
+interface stateOfCartItems {
+  products: cartProducts[];
+}
+
+interface cartProducts {
+  product: Props;
+  quantity: number;
+}
+```
+
+### Available Actions
+
+| Action | Payload | Description |
+|---|---|---|
+| `add` | `Props` (full product) | Adds product to cart or increases quantity if it exists |
+| `remove` | `number` (product id) | Removes product from cart entirely |
+| `increaseQuantity` | `number` (product id) | Increases quantity by 1 |
+| `decreaseQuantity` | `number` (product id) | Decreases quantity by 1, removes if it reaches 0 |
+| `clear` | none | Empties the entire cart |
+
+### Dispatching Actions
+
+```tsx
+// Reading cart state
+const cart = useCart();
+
+// Dispatching actions
+const dispatch = useCartDispatch();
+
+dispatch({ type: "add", payload: product });
+dispatch({ type: "remove", payload: product.id });
+dispatch({ type: "increaseQuantity", payload: product.id });
+dispatch({ type: "decreaseQuantity", payload: product.id });
+dispatch({ type: "clear" });
+```
+
+### Custom Hooks
+
+```ts
+useCart()         // returns current cart state
+useCartDispatch() // returns dispatch function
+```
+
+Both hooks must be used inside a `CartProvider` or they will throw an error.
+
+---
+
+## Git Flow Process
+
+This project follows the Git Flow branching strategy.
+
+### Branch Structure
+
+```
+main           ← production ready code only
+dev            ← integration branch, all features merge here
+feature/*      ← individual feature branches
+```
+
+### Workflow
+
+```bash
+# Create a new feature branch from dev
+git checkout dev
+git checkout -b feature/your-feature-name
+
+# Work on your feature, then stage and commit
+git add .
+git commit -m "feat(scope): description of change"
+
+# Merge back into dev when done
+git checkout dev
+git merge feature/your-feature-name
+git push origin dev
+```
+
+### Commit Prefix Convention
+
+| Prefix | When to use |
+|---|---|
+| `feat` | Adding new functionality |
+| `fix` | Bug fixes |
+| `style` | CSS / UI changes only |
+| `refactor` | Restructuring code without changing behaviour |
+| `chore` | Config, dependencies, setup |
+| `docs` | Documentation changes |
+
+---
+
+## PWA & Lighthouse
+
+This app is configured as a Progressive Web App using `vite-plugin-pwa`.
+
+On production build the following are auto generated:
+
+```
+dist/sw.js                  ← service worker
+dist/manifest.webmanifest   ← PWA manifest
+```
+
+To run a Lighthouse audit:
+
+```bash
+npm run build
+npm run preview
+```
+
+Then open Chrome → Inspect → Lighthouse → Analyze page load.

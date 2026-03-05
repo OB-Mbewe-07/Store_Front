@@ -1,5 +1,4 @@
 import { useCart, useCartDispatch } from  "../store/context"
-import { Button } from "@heroui/button";
 
 const CartSummary = () => {
   const cart = useCart();
@@ -9,23 +8,48 @@ const CartSummary = () => {
   const totalPrice = cart.products.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
 
   return (
-    <div>
+    <div className="cart-summary">
       <h2>Cart Summary</h2>
-      <p>Total Items: {totalItems}</p>
-      <p>Total Price: R{totalPrice.toFixed(2)}</p>
+
+      <div className="total-line">
+        <span>Total Items: {totalItems} </span>
+        <span className="price">R{totalPrice.toFixed(2)}</span>
+      </div>
 
       {cart.products.map((item) => (
-        <div key={item.product.id}>
-          <p>{item.product.title}</p>
-          <p>Quantity: {item.quantity}</p>
+        <div key={item.product.id} className="cart-item">
+          <div className="title">{item.product.title}</div>
+          <div className="quantity">Qty: {item.quantity}</div>
 
-          <button onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}>Add</button>
-          <button onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}>Subract</button>
-          <Button onClick={() => dispatch({ type: "remove", payload: item.product.id })}>Remove</Button>
+          <div className="buttons">
+            <button
+              className="btn add"
+              onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}
+            >
+              +
+            </button>
+            <button
+              className="btn subtract"
+              onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}
+            >
+              −
+            </button>
+            <button
+              className="btn remove"
+              onClick={() => dispatch({ type: "remove", payload: item.product.id })}
+            >
+              Remove
+            </button>
+          </div>
         </div>
       ))}
 
-      <button onClick={() => dispatch({ type: "clear" })}>Clear Cart</button>
+      <button
+        className="clear-btn"
+        onClick={() => dispatch({ type: "clear" })}
+      >
+        Clear Cart
+      </button>
     </div>
   );
 };

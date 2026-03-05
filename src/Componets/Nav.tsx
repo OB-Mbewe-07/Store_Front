@@ -57,25 +57,27 @@ export const SearchIcon = ({ size = 24, strokeWidth = 1.5, width, height }: Sear
 
 export default function DisplayNav() {
   return (
-    <Navbar isBordered className="bg-[#3D4849] w-full max-w-full px-0 border border-white rounded-lg mt-[4%]">
-      <NavbarContent justify="start">
-        <NavbarBrand className="mr-4">
-          <AcmeLogo />
-          <p className="hidden sm:block font-bold text-inherit">ACME</p>
-        </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-3">
-          <NavbarItem isActive>
-            <Link aria-current="page" color="secondary" href="#" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
-              Cart
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="#" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
-              Summary
-            </Link>
-          </NavbarItem>
+    <div className="nav-top">
+        <Navbar isBordered className="bg-[#3D4849] w-full max-w-full px-0 border border-white rounded-lg mt-[4%]">
+        <NavbarContent justify="start">
+            <NavbarBrand className="mr-4">
+            <AcmeLogo />
+            <p className="hidden sm:block font-bold text-inherit">ACME</p>
+            </NavbarBrand>
+            <NavbarContent className="hidden sm:flex gap-3">
+            <NavbarItem isActive>
+                <Link aria-current="page" color="secondary" href="#" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
+                Cart
+                </Link>
+            </NavbarItem>
+            <NavbarItem>
+                <Link color="foreground" href="#" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
+                Summary
+                </Link>
+            </NavbarItem>
+            </NavbarContent>
         </NavbarContent>
-      </NavbarContent>
-    </Navbar>
+        </Navbar>
+    </div>
   );
 }
