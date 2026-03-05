@@ -19,8 +19,8 @@ const CartSummary = () => {
           <p>{item.product.title}</p>
           <p>Quantity: {item.quantity}</p>
 
-          <Button onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}>Add</Button>
-          <Button onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}>Subract</Button>
+          <button onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}>Add</button>
+          <button onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}>Subract</button>
           <Button onClick={() => dispatch({ type: "remove", payload: item.product.id })}>Remove</Button>
         </div>
       ))}
