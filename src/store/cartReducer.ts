@@ -23,7 +23,7 @@ export default function cartReducer(state: stateOfCartItems, action:reducerActio
             }
         }  
         case "clear":{
-            return initialState;
+            return initialState ;
         }
         case "decreaseQuantity":{
             return{
