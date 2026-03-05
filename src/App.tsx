@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import './App.css'
 import GetProducts from './Componets/Products'
 import { Provider } from './components/ui/provider'

@@ -9,7 +9,7 @@ function GetProducts(){
     return(
         <section className="product_list">
             {products.map((product)=>(
-                <Card.Root maxW="sm" overflow="hidden">
+                <Card.Root maxW="sm" overflow="hidden" className="card-container">
                     <Image className="image_size"
                         src={product.image}
                         alt={product.description}
