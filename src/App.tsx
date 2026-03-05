@@ -2,19 +2,25 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import GetProducts from './Componets/Products'
 import { Provider } from './components/ui/provider'
-import * as React from "react";
+
 import {HeroUIProvider} from "@heroui/react";
 import DisplayNav from './Componets/Nav';
 import './styles/tailwind.css';
+
+import CartSummary from './Componets/Summary';
+import CartProvider from './store/context';
 
 function App() {
   return(
     <div>
       <HeroUIProvider>
-        <DisplayNav />
-        <Provider>
-          <GetProducts />
-        </Provider> 
+        <CartProvider>
+          <DisplayNav />
+          <Provider>
+            <GetProducts />
+            <CartSummary />
+          </Provider> 
+        </CartProvider>
       </HeroUIProvider> 
     </div>
   )
