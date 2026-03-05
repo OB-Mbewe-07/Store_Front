@@ -1,4 +1,5 @@
 import { useCart, useCartDispatch } from  "../store/context"
+import { Button } from "@heroui/button";
 
 const CartSummary = () => {
   const cart = useCart();
@@ -18,9 +19,9 @@ const CartSummary = () => {
           <p>{item.product.title}</p>
           <p>Quantity: {item.quantity}</p>
 
-          <button onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}>+</button>
-          <button onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}>-</button>
-          <button onClick={() => dispatch({ type: "remove", payload: item.product.id })}>Remove</button>
+          <Button onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}>Add</Button>
+          <Button onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}>Subract</Button>
+          <Button onClick={() => dispatch({ type: "remove", payload: item.product.id })}>Remove</Button>
         </div>
       ))}
 
