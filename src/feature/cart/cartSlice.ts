@@ -22,7 +22,6 @@ export const cartSlice = createSlice({
     },
     remove: (state , action: PayloadAction<number>) =>{
         state.products = state.products.filter(prod => prod.product.id !== action.payload);
-        console.log("removed");
     },
     increaseQuantity: (state , action: PayloadAction<number>) =>{
         const item = state.products.find(prod => prod.product.id === action.payload);
@@ -33,9 +32,9 @@ export const cartSlice = createSlice({
     },
     decreaseQuantity: (state , action: PayloadAction<number>) =>{
         const item = state.products.find(prod => prod.product.id === action.payload);
-
+        
         if (item){
-            item.quantity -= 1;
+            (item.quantity === 1) ? state.products = state.products.filter(prod => prod.product.id !== action.payload): item.quantity -= 1;
         }
     },
     clear: (state) =>{

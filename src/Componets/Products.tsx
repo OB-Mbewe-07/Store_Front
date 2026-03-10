@@ -1,9 +1,8 @@
 import { use } from "react";
 import { allProducts } from "../API/data";
 import { Button, Card, Image, Text } from "@chakra-ui/react"
-import { useCartDispatch } from "../store/context";
 import truncateChars from "../Utils/string logic"; 
-import {add , remove, increaseQuantity, decreaseQuantity} from "../feature/cart/cartSlice"
+import {add , remove} from "../feature/cart/cartSlice"
 import { useDispatch } from 'react-redux'; 
 
 function GetProducts(){
@@ -30,7 +29,7 @@ function GetProducts(){
                         </Text>
                     </Card.Body>
                     <Card.Footer gap="2">
-                        <Button variant="solid" onClick={()=>dispatch(increaseQuantity(product.id))}>Add to cart</Button>
+                        <Button variant="solid" onClick={()=>dispatch(add(product))}>Add to cart</Button>
                         <Button variant="ghost" onClick={()=>dispatch(remove(product.id))}>Remove</Button>
                     </Card.Footer>
                 </Card.Root>

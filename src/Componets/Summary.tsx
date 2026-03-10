@@ -1,12 +1,14 @@
-import { useCart, useCartDispatch } from  "../store/context"
-import   { useDispatch } from "react-redux";
+import type { RootState } from "../app/store";
+import   { useDispatch, useSelector } from "react-redux";
+import { increaseQuantity, decreaseQuantity,remove, clear} from "../feature/cart/cartSlice";
 
 const CartSummary = () => {
-  const cart = useCart();
+  /*This i s coming from the global state that is coming from the store */
+  const cart = useSelector((state:RootState) => state.cart.products);
   const dispatch = useDispatch();
 
-  const totalItems = cart.products.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cart.products.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
 
   return (
     <div className="cart-summary">
@@ -17,7 +19,7 @@ const CartSummary = () => {
         <span className="price">R{totalPrice.toFixed(2)}</span>
       </div>
 
-      {cart.products.map((item) => (
+      {cart.map((item) => (
         <div key={item.product.id} className="cart-item">
           <div className="title">{item.product.title}</div>
           <div className="quantity">Qty: {item.quantity}</div>
@@ -25,19 +27,19 @@ const CartSummary = () => {
           <div className="buttons">
             <button
               className="btn add"
-              onClick={() => dispatch({ type: "increaseQuantity", payload: item.product.id })}
+              onClick={() => dispatch(increaseQuantity(item.product.id))}
             >
               +
             </button>
             <button
               className="btn subtract"
-              onClick={() => dispatch({ type: "decreaseQuantity", payload: item.product.id })}
+              onClick={() => dispatch(decreaseQuantity(item.product.id))}
             >
               −
             </button>
             <button
               className="btn remove"
-              onClick={() => dispatch({ type: "remove", payload: item.product.id })}
+              onClick={() => dispatch(remove(item.product.id))}
             >
               Remove
             </button>
@@ -47,7 +49,7 @@ const CartSummary = () => {
 
       <button
         className="clear-btn"
-        onClick={() => dispatch({ type: "clear" })}
+        onClick={() => dispatch(clear())}
       >
         Clear Cart
       </button>
