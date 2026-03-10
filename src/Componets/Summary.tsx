@@ -1,8 +1,9 @@
 import { useCart, useCartDispatch } from  "../store/context"
+import   { useDispatch } from "react-redux";
 
 const CartSummary = () => {
   const cart = useCart();
-  const dispatch = useCartDispatch();
+  const dispatch = useDispatch();
 
   const totalItems = cart.products.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.products.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
