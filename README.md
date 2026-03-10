@@ -144,6 +144,39 @@ dev            ← integration branch, all features merge here
 feature/*      ← individual feature branches
 ```
 
+### Dispatching Actions
+
+```tsx
+import { useDispatch, useSelector } from 'react-redux';
+import { add, remove, increaseQuantity, decreaseQuantity, clear } from '@/feature/cart/cartSlice';
+import type { RootState } from '@/app/store';
+
+// Reading cart state
+const products = useSelector((state: RootState) => state.cart.products);
+
+// Dispatching actions
+const dispatch = useDispatch();
+
+dispatch(add(product));
+dispatch(remove(product.id));
+dispatch(increaseQuantity(product.id));
+dispatch(decreaseQuantity(product.id));
+dispatch(clear());
+```
+
+### RTK Query — Data Fetching
+
+```tsx
+import { useGetProductsQuery } from '@/API/data';
+
+const { data: products, isLoading, isError } = useGetProductsQuery();
+```
+
+RTK Query automatically handles caching, loading states and error states — no manual fetch calls needed.
+
+---
+
+
 ### Workflow
 
 ```bash
